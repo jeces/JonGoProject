@@ -12,6 +12,25 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 
+
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+
+##
+
+#Firebase database 인증 및 앱 초기화
+cred = credentials.Certificate('AIzaSyDCS1s-3P2QUXv7jG4qdHxqjVWPQQQoJ98')
+firebase_admin.initialize_app(cred,{
+    'databaseURL' : 'firebase-adminsdk-zycb9@jonggo-bc5df.iam.gserviceaccount.com'
+})
+
+dir = db.reference()    # 기본위치 지정
+dir.update({'자동차':'기아'})
+
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -124,3 +143,5 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
