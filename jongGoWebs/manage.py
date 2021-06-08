@@ -2,7 +2,20 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+
 ##
+
+#Firebase database 인증 및 앱 초기화
+cred = credentials.Certificate('jonggo-bc5df-firebase-adminsdk-zycb9-c5d6bcdd14')
+firebase_admin.initialize_app(cred,{
+    'databaseURL' : 'firebase-adminsdk-zycb9@jonggo-bc5df.iam.gserviceaccount.com'
+})
+
+dir = db.reference()    # 기본위치 지정
+dir.update({'자동차':'기아'})
 
 def main():
     """Run administrative tasks."""
