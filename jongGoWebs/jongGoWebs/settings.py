@@ -18,7 +18,7 @@ from firebase_admin import credentials
 from firebase_admin import db
 
 ##
-
+#
 #Firebase database 인증 및 앱 초기화
 cred = credentials.Certificate('AIzaSyDCS1s-3P2QUXv7jG4qdHxqjVWPQQQoJ98')
 firebase_admin.initialize_app(cred,{
