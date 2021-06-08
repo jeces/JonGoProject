@@ -18,15 +18,16 @@ from firebase_admin import credentials
 from firebase_admin import db
 
 ##
-#
+###### Firebase 연동
 #Firebase database 인증 및 앱 초기화
 cred = credentials.Certificate('jonggo-bc5df-firebase-adminsdk-zycb9-c5d6bcdd14.json')
 firebase_admin.initialize_app(cred,{
     'databaseURL' : 'https://jonggo-bc5df-default-rtdb.firebaseio.com/'
 })
-
 dir = db.reference()    # 기본위치 지정
 dir.update({'자동차':'기아'})
+######
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
