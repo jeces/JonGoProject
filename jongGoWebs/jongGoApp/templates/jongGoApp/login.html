@@ -31,9 +31,6 @@
                       <a href="{% url 'index' %}">Home</a>
                   </li>
                   <li>
-                      <a href="{% url 'index' %}">마이페이지</a>
-                  </li>
-                  <li>
                       <a id="joinmenu" href="{% url 'join' %}">가입</a>
                   </li>
                   <li class="active">
@@ -115,28 +112,43 @@
         //파이어베이스 이메일 로그인 함수
         firebaseEmailAuth.signInWithEmailAndPassword(email, password)
         .then(function(firebaseUser) {
-          alert("로그인 중");
-          //성공하면 firebaseUser에 유저 정보 값이 담겨 넘어온다.
-          loginSuccess(firebaseUser);
 
-        })
-        .catch(function(error){
+          //성공하면 firebaseUser에 유저 정보 값이 담겨 넘어온다.
+          emailAuthCheck(firebaseUser);
+
+        }).catch(function(firebaseUser){
 
           //실패했을 때 에러처리
-          alert(error);
-          alert("로그인 실패");
+          loginCheck(firebaseUser);
 
         });
       });
     });
+
     function loginSuccess(firebaseUser){
        alert("로그인 성공");
        //로그인 성공한 유저 id 확인해 보기 - firebase database에 접근해서 데이터 조회 하는 함수
        firebaseDatabase.ref("users/"+firebaseUser.uid).once('value').then(function(snapshot){
-            //alert(snapshot.val().name)
-        });
-        //메인 페이지로 이동
-        window.location.href = "{% url 'index' %}"
+            //alert(snapshot.val().name);
+       });
+       //메인 페이지로 이동
+       window.location.href = "{% url 'index' %}"
+    }
+
+    function loginCheck(firebaseUser){
+        alert("로그인 실패/이메일과 비밀번호를 혹인해주세요");
+        //아이디 체크(firebase 불러와서 비교해서 아이디가 없는건지, 비밀번호가 다른건지 체크)
+
+    }
+
+    function emailAuthCheck(firebaseUser){
+        var user = firebase.auth().currentUser;
+        if(user.emailVerified == true){
+            alert("이메일 인증 완료");
+            loginSuccess(firebaseUser);
+        }else{
+            alert("이메일 인증을 완료하세요");
+        }
     }
   </script>
 </body>

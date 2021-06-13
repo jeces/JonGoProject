@@ -30,9 +30,6 @@
                   <li>
                       <a href="{% url 'index' %}">Home</a>
                   </li>
-                  <li>
-                      <a href="{% url 'index' %}">마이페이지</a>
-                  </li>
                   <li class="active">
                       <a id="joinmenu" href="{% url 'join' %}">가입</a>
                   </li>
@@ -127,18 +124,19 @@
             userInfo = user; //가입 후 callBack 함수로 생성된 유저의 정보가 user에 담겨서 넘어온다. 전역변수에 할당.
 
             //뭐가 찍히는지 직접 체크
-            console.log("userInfo/"+userInfo); //오브젝트 타입
-            console.log("userInfo.currentUser/"+userInfo.currentUser); //안됨
-            console.log("userInfo.uid/"+userInfo.uid); //vPArtCHqPpOeIOpidEfug0Kgq3v1
+            //console.log("userInfo/"+userInfo); //오브젝트 타입
+            //console.log("userInfo.currentUser/"+userInfo.currentUser); //안됨
+            //console.log("userInfo.uid/"+userInfo.uid); //vPArtCHqPpOeIOpidEfug0Kgq3v1
 
             //성공했을 때 작동되는 함수
+            //이메일 인증
             let user_01 = firebaseEmailAuth.currentUser;
 
-            user_01.sendEmailVerification()
-                .then(function() {
-                    console.log('이메일 전송');
-                })
-                .catch("Email not sent");
+            user_01.sendEmailVerification().then(function() {
+                    //alert("이메일 전송");
+            }).catch(function(error){
+                    //alert("에러");
+            })
             //이메일 인증 끝
             logUser();
 
@@ -148,7 +146,7 @@
             var errorMessage = error.message;
             alert(errorMessage);
 
-        });
+        })
 
         //가입 성공했을 때 호출 되는 함수 - 위의 firebase의 인증 모듈과 다른 database 모듈임을 확인하자.
         function logUser(){
@@ -160,7 +158,7 @@
             };
 
             ref.set(obj); // 고유한 자식 키가 하나 생셩이 되면서 json 삽입
-            alert("가입성공");
+            alert("가입성공. 이메일 인증을 완료한 후 로그인 하세요");
 
             //메인 페이지로 이동시키고 세션 저장시키기
             window.location.href = "{% url 'index' %}"
