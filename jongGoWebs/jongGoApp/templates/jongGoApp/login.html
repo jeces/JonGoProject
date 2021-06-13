@@ -105,13 +105,25 @@
 
     //제이쿼리 사용
     $(document).ready(function(){
-      //가입버튼 눌렀을 때 작동하는 함수
+      //로그인버튼 눌렀을 때 작동하는 함수
       $(document).on('click','.login',function(){
 
         //jquery를 이용해서 입력된 값을 가져온다.
         var email = $('#email').val();
         var password = $('#pwd').val();
-        alert("로그인 버튼 눌렸음" + email +":"+ password);
+
+        //이메일 입력 체크
+        if(email == "") {
+            alert("Email을 입력해주세요");
+            return;
+        }
+        //패스워드 입력 체크
+        if(password == "") {
+            alert("Password를 입력해주세요");
+            return;
+        }
+
+        alert(email +":"+ password);
 
         //파이어베이스 이메일 로그인 함수
         firebaseEmailAuth.signInWithEmailAndPassword(email, password)
@@ -121,7 +133,7 @@
           emailAuthCheck(firebaseUser);
 
         }).catch(function(firebaseUser){
-
+          console.log(firebaseUser)
           //실패했을 때 에러처리
           loginCheck(firebaseUser);
 
@@ -148,10 +160,11 @@
     function emailAuthCheck(firebaseUser){
         var user = firebase.auth().currentUser;
         if(user.emailVerified == true){
-            alert("이메일 인증 완료");
+            alert("이메일 인증 완료된 아이디 입니다");
             loginSuccess(firebaseUser);
         }else{
             alert("이메일 인증을 완료하세요");
+            return;
         }
     }
   </script>

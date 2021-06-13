@@ -123,8 +123,33 @@
         var password2 = $('#pwd2').val();
         name = $('#name').val();
 
+        //Email 체크
+        if(email == "") {
+            alert("Email을 입력해주세요");
+            return;
+        }
+        //Name체크
+        if(name == "") {
+            alert("Name을 입력해주세요");
+            return;
+        }
+        //Re password 체크
+        if(password != password2) {
+            alert("패스워드를 다시 확인해주세요");
+            return;
+        }
+
         //이메일로 가입 버튼 눌렀을 때 작동되는 함수 - firebase 인증 모듈
         firebaseEmailAuth.createUserWithEmailAndPassword(email, password).then(function(user) {
+
+            //이메일 인증
+            let user_01 = firebaseEmailAuth.currentUser;
+
+            user_01.sendEmailVerification().then(function() {
+                    logUser();
+            }).catch(function(error){
+                    //alert("에러");
+            })
 
             userInfo = user; //가입 후 callBack 함수로 생성된 유저의 정보가 user에 담겨서 넘어온다. 전역변수에 할당.
 
@@ -133,26 +158,14 @@
             //console.log("userInfo.currentUser/"+userInfo.currentUser); //안됨
             //console.log("userInfo.uid/"+userInfo.uid); //vPArtCHqPpOeIOpidEfug0Kgq3v1
 
-            //Re password 체크
-
-
-            //이메일 인증
-            let user_01 = firebaseEmailAuth.currentUser;
-
-            user_01.sendEmailVerification().then(function() {
-                    //alert("이메일 전송");
-            }).catch(function(error){
-                    //alert("에러");
-            })
             //이메일 인증 끝
-            logUser();
+
 
         }, function(error) {
             //에러가 발생했을 때
             var errorCode = error.code;
             var errorMessage = error.message;
             alert(errorMessage);
-
         })
 
         //가입 성공했을 때 호출 되는 함수 - 위의 firebase의 인증 모듈과 다른 database 모듈임을 확인하자.
