@@ -2,9 +2,7 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
+
 
 ##
 

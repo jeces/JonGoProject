@@ -7,7 +7,9 @@ from firebase_admin import db
 
 
 def index(request):
-    dir = db.reference()  # 기본위치 지정
-    datae_1 = db.reference().child()
+    #dir = db.reference()  # 기본위치 지정
+    #data_1 = db.reference().child()
     return render(request, 'jongGoApp/index.html')
 
+def join(request):
+    return render(request, 'jongGoApp/join.html')
