@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-  <title>중고거래홈페이지 회원가입</title>
+  <title>중고거래홈페이지 로그인</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -9,7 +9,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <!-- 네비게이션 바 시작 -->
+<!-- 네비게이션 바 시작 -->
   <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
           <!-- Brand and toggle get grouped for better mobile display -->
@@ -33,10 +33,10 @@
                   <li>
                       <a href="{% url 'index' %}">마이페이지</a>
                   </li>
-                  <li class="active">
+                  <li>
                       <a id="joinmenu" href="{% url 'join' %}">가입</a>
                   </li>
-                  <li>
+                  <li class="active">
                       <a id="loginmenu" href="{% url 'login' %}">로그인</a>
                   </li>
 
@@ -54,8 +54,7 @@
 
   <!-- 네비게이션 바 끝 -->
 
-
-<!-- 가입 폼 시작 -->
+<!-- 로그인 폼 시작 -->
 <div class="container">
     <h1>환영합니다!</h1>
 
@@ -65,22 +64,15 @@
     </div>
 
     <div class="form-group">
-            <label for="name">NicName:</label>
-            <input type="text" class="form-control" id="name">
-    </div>
-
-    <div class="form-group">
       <label for="pwd">Password:</label>
       <input type="password" class="form-control" id="pwd">
     </div>
 
-    <button type="button" class="btn btn-default join">가입</button>
+    <button type="button" class="btn btn-default login">로그인</button>
 
 </div>
-<!-- 가입 폼 끝 -->
-
-
-  <!--스크립트 부분. 자신의 스크립트 코드로 변경하세요! -->
+<!-- 로그인 폼 끝 -->
+<!--스크립트 부분. 자신의 스크립트 코드로 변경하세요! -->
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
 
@@ -89,7 +81,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-analytics.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
-  <script>
+<script>
     var firebaseEmailAuth; //파이어베이스 email 인증 모듈 전역변수
     var firebaseDatabase; //파이어베이스 db 모듈 전역변수
     var userInfo; //가입한 유저의 정보. object 타입
@@ -104,69 +96,48 @@
       appId: "1:100699940779:web:6047a0d8040805faf114ee",
       measurementId: "G-7J93P2XQDM"
     };
+
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
-
     firebaseEmailAuth = firebase.auth();
     firebaseDatabase = firebase.database();
 
-
-    //제이쿼리
+    //제이쿼리 사용
     $(document).ready(function(){
       //가입버튼 눌렀을 때 작동하는 함수
-      $(document).on('click','.join',function(){
+      $(document).on('click','.login',function(){
 
         //jquery를 이용해서 입력된 값을 가져온다.
         var email = $('#email').val();
         var password = $('#pwd').val();
-        name = $('#name').val();
+        alert("로그인 버튼 눌렸음" + email +":"+ password);
 
-        //이메일로 가입 버튼 눌렀을 때 작동되는 함수 - firebase 인증 모듈
-        firebaseEmailAuth.createUserWithEmailAndPassword(email, password).then(function(user) {
+        //파이어베이스 이메일 로그인 함수
+        firebaseEmailAuth.signInWithEmailAndPassword(email, password)
+        .then(function(firebaseUser) {
+          alert("로그인 중");
+          //성공하면 firebaseUser에 유저 정보 값이 담겨 넘어온다.
+          loginSuccess(firebaseUser);
 
-            userInfo = user; //가입 후 callBack 함수로 생성된 유저의 정보가 user에 담겨서 넘어온다. 전역변수에 할당.
+        })
+        .catch(function(error){
 
-            //뭐가 찍히는지 직접 체크
-            console.log("userInfo/"+userInfo); //오브젝트 타입
-            console.log("userInfo.currentUser/"+userInfo.currentUser); //안됨
-            console.log("userInfo.uid/"+userInfo.uid); //vPArtCHqPpOeIOpidEfug0Kgq3v1
-
-            //성공했을 때 작동되는 함수
-            let user_01 = firebaseEmailAuth.currentUser;
-
-            user_01.sendEmailVerification()
-                .then(function() {
-                    console.log('이메일 전송');
-                })
-                .catch("Email not sent");
-            //이메일 인증 끝
-            logUser();
-
-        }, function(error) {
-            //에러가 발생했을 때
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            alert(errorMessage);
+          //실패했을 때 에러처리
+          alert(error);
+          alert("로그인 실패");
 
         });
-
-        //가입 성공했을 때 호출 되는 함수 - 위의 firebase의 인증 모듈과 다른 database 모듈임을 확인하자.
-        function logUser(){
-            var ref = firebaseDatabase.ref("users/"+userInfo.uid); //저장될 곳을 users라는 부모 키를 레퍼런스로 지정.
-
-            //저장 형식
-            var obj = {
-                name: name,
-            };
-
-            ref.set(obj); // 고유한 자식 키가 하나 생셩이 되면서 json 삽입
-            alert("가입성공");
-
-            //메인 페이지로 이동시키고 세션 저장시키기
-            window.location.href = "{% url 'index' %}"
-        }
       });
     });
+    function loginSuccess(firebaseUser){
+       alert("로그인 성공");
+       //로그인 성공한 유저 id 확인해 보기 - firebase database에 접근해서 데이터 조회 하는 함수
+       firebaseDatabase.ref("users/"+firebaseUser.uid).once('value').then(function(snapshot){
+            //alert(snapshot.val().name)
+        });
+        //메인 페이지로 이동
+        window.location.href = "{% url 'index' %}"
+    }
   </script>
 </body>
 </html>

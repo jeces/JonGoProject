@@ -20,4 +20,5 @@ from.import views
 urlpatterns = [
     path('index/', views.index, name='index'),
     path('join/', views.join, name='join'),
+    path('login/', views.login, name='login'),
 ]

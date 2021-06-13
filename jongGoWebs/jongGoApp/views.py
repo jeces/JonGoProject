@@ -13,3 +13,6 @@ def index(request):
 
 def join(request):
     return render(request, 'jongGoApp/join.html')
+
+def login(request):
+    return render(request, 'jongGoApp/login.html')
