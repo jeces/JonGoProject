@@ -83,34 +83,33 @@
 
 <!--스크립트 부분. 자신의 스크립트 코드 -->
 <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
 
 <!-- TODO: Add SDKs for Firebase products that you want to use
    https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-analytics.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js"></script>
+
 <script>
     var firebaseEmailAuth; //파이어베이스 email 인증 모듈 전역변수
     var firebaseDatabase; //파이어베이스 db 모듈 전역변수
     var userInfo; //가입한 유저의 정보. object 타입
     //파이어 베이스 초기화 코드
     var firebaseConfig = {
-      apiKey: "AIzaSyDCS1s-3P2QUXv7jG4qdHxqjVWPQQQoJ98",
-      authDomain: "jonggo-bc5df.firebaseapp.com",
-      databaseURL: "https://jonggo-bc5df-default-rtdb.firebaseio.com",
-      projectId: "jonggo-bc5df",
-      storageBucket: "jonggo-bc5df.appspot.com",
-      messagingSenderId: "100699940779",
-      appId: "1:100699940779:web:6047a0d8040805faf114ee",
-      measurementId: "G-7J93P2XQDM"
+        apiKey: "AIzaSyDCS1s-3P2QUXv7jG4qdHxqjVWPQQQoJ98",
+        authDomain: "jonggo-bc5df.firebaseapp.com",
+        databaseURL: "https://jonggo-bc5df-default-rtdb.firebaseio.com",
+        projectId: "jonggo-bc5df",
+        storageBucket: "jonggo-bc5df.appspot.com",
+        messagingSenderId: "100699940779",
+        appId: "1:100699940779:web:6047a0d8040805faf114ee",
+        measurementId: "G-7J93P2XQDM"
     };
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
-
     firebaseEmailAuth = firebase.auth();
     firebaseDatabase = firebase.database();
-
 
     //제이쿼리
     $(document).ready(function(){
@@ -142,22 +141,19 @@
         //이메일로 가입 버튼 눌렀을 때 작동되는 함수 - firebase 인증 모듈
         firebaseEmailAuth.createUserWithEmailAndPassword(email, password).then(function(user) {
 
+            userInfo = user; //가입 후 callBack 함수로 생성된 유저의 정보가 user에 담겨서 넘어온다. 전역변수에 할당.
+            //뭐가 찍히는지 직접 체크
+            alert("userInfo/"+userInfo); //오브젝트 타입
+            alert("userInfo.currentUser/"+userInfo.currentUser); //안됨
+            alert("userInfo.uid/"+userInfo.uid); //vPArtCHqPpOeIOpidEfug0Kgq3v1
+
             //이메일 인증
             let user_01 = firebaseEmailAuth.currentUser;
-
             user_01.sendEmailVerification().then(function() {
                     logUser();
             }).catch(function(error){
-                    //alert("에러");
+                    alert("에러");
             })
-
-            userInfo = user; //가입 후 callBack 함수로 생성된 유저의 정보가 user에 담겨서 넘어온다. 전역변수에 할당.
-
-            //뭐가 찍히는지 직접 체크
-            //console.log("userInfo/"+userInfo); //오브젝트 타입
-            //console.log("userInfo.currentUser/"+userInfo.currentUser); //안됨
-            //console.log("userInfo.uid/"+userInfo.uid); //vPArtCHqPpOeIOpidEfug0Kgq3v1
-
             //이메일 인증 끝
 
 

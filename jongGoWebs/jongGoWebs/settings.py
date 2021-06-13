@@ -20,12 +20,10 @@ from firebase_admin import db
 ##
 ###### Firebase 연동
 #Firebase database 인증 및 앱 초기화
-cred = credentials.Certificate('jonggo-bc5df-firebase-adminsdk-zycb9-c5d6bcdd14.json')
-firebase_admin.initialize_app(cred,{
-    'databaseURL' : 'https://jonggo-bc5df-default-rtdb.firebaseio.com/'
-})
-dir = db.reference()    # 기본위치 지정
-dir.update({'이름':['장영식,안명성,정선우,황윤기,학민이형']})
+#cred = credentials.Certificate('jonggo-bc5df-firebase-adminsdk-zycb9-c5d6bcdd14.json')
+#firebase_admin.initialize_app(cred,{
+#    'databaseURL' : 'https://jonggo-bc5df-default-rtdb.firebaseio.com/'
+#})
 ######
 
 
