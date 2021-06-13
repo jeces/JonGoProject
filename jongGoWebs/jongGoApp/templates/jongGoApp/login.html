@@ -21,7 +21,7 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="{% url 'index' %}">환영합니다!</a>
+              <a class="navbar-brand" href="{% url 'index' %}">중고거래홈페이지</a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
@@ -53,19 +53,23 @@
 
 <!-- 로그인 폼 시작 -->
 <div class="container">
-    <h1>환영합니다!</h1>
+    <h1>로그인 페이지</h1>
 
     <div class="form-group">
       <label for="email">Email address:</label>
-      <input type="email" class="form-control" id="email">
+      <input type="email" class="form-control" id="email" placeholder="Email address">
     </div>
 
     <div class="form-group">
       <label for="pwd">Password:</label>
-      <input type="password" class="form-control" id="pwd">
+      <input type="password" class="form-control" id="pwd" placeholder="Password">
     </div>
 
     <button type="button" class="btn btn-default login">로그인</button>
+
+    <button type="button" class="btn btn-default findId">아이디 찾기</button>
+
+    <button type="button" class="btn btn-default findPw">비밀번호 찾기</button>
 
 </div>
 <!-- 로그인 폼 끝 -->
