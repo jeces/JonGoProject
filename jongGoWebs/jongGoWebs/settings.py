@@ -20,10 +20,8 @@ from firebase_admin import db
 ##
 ###### Firebase 연동
 #Firebase database 인증 및 앱 초기화
-#cred = credentials.Certificate('jonggo-bc5df-firebase-adminsdk-zycb9-c5d6bcdd14.json')
-#firebase_admin.initialize_app(cred,{
-#    'databaseURL' : 'https://jonggo-bc5df-default-rtdb.firebaseio.com/'
-#})
+cred = credentials.Certificate("serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
 ######
 
 

@@ -118,6 +118,15 @@
     //데이터베이스 모듈객체 가져오기
     firebaseDatabase = firebase.database();
 
+    //초기노드생성 테스트
+    //alert("123");
+    //firebaseDatabase.ref('users/' + "asdff").set({
+    //username: "1",
+    //email: "2",
+    //profile_picture : "3"
+    //});
+    //alert("1234");
+
     //세션 체크 함수
     userSessionCheck();
 
@@ -133,10 +142,10 @@
           firebaseDatabase.ref("users/" + user.uid).once('value').then(function (snapshot) {
 
             //자바스크립트 dom 선택자를 통해서 네비게이션 메뉴의 엘리먼트 변경해주기
-            document.getElementById("loginmenu").textContent = "로그아웃";
-            document.getElementById("loginmenu").href = "/logout.html";
+            //document.getElementById("loginmenu").textContent = "로그아웃";
+            //document.getElementById("loginmenu").href = "/logout.html";
             //document.getElementById("joinmenu").textContent = "반가워요! " + snapshot.val().name + " 님";
-            document.getElementById("joinmenu").href = "#";
+            //document.getElementById("joinmenu").href = "#";
 
             //name = snapshot.val().name;   //유저 닉네임은 계속 쓸거기 때문에 전역변수로 할당
             loginUserKey = snapshot.key;  //로그인한 유저의 key도 계속 쓸 것이기 때문에 전역변수로 할당
@@ -147,10 +156,6 @@
 
             return true
           });
-
-        } else {
-                $('#comment').val("로그인 하시면 사람들의 감사 리스트를 보실 수 있습니다. 로그인 해주실꺼죠^^?");
-          return false
         }
       });
     }

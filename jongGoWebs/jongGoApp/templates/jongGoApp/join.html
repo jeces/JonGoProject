@@ -107,11 +107,12 @@
         measurementId: "G-7J93P2XQDM"
     };
     firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
+
     firebaseEmailAuth = firebase.auth();
     firebaseDatabase = firebase.database();
 
     //제이쿼리
+    var isAdduser = false ;
     $(document).ready(function(){
       //가입버튼 눌렀을 때 작동하는 함수
       $(document).on('click','.join',function(){
@@ -138,49 +139,72 @@
             return;
         }
 
-        //이메일로 가입 버튼 눌렀을 때 작동되는 함수 - firebase 인증 모듈
-        firebaseEmailAuth.createUserWithEmailAndPassword(email, password).then(function(user) {
+        isAdduser = true ;
 
-            userInfo = user; //가입 후 callBack 함수로 생성된 유저의 정보가 user에 담겨서 넘어온다. 전역변수에 할당.
-            //뭐가 찍히는지 직접 체크
-            alert("userInfo/"+userInfo); //오브젝트 타입
-            alert("userInfo.currentUser/"+userInfo.currentUser); //안됨
-            alert("userInfo.uid/"+userInfo.uid); //vPArtCHqPpOeIOpidEfug0Kgq3v1
-
-            //이메일 인증
-            let user_01 = firebaseEmailAuth.currentUser;
-            user_01.sendEmailVerification().then(function() {
-                    logUser();
-            }).catch(function(error){
-                    alert("에러");
-            })
-            //이메일 인증 끝
-
-
-        }, function(error) {
-            //에러가 발생했을 때
+        firebaseEmailAuth.createUserWithEmailAndPassword(email, password).catch(function(error) {
+            // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
-            alert(errorMessage);
-        })
-
-        //가입 성공했을 때 호출 되는 함수 - 위의 firebase의 인증 모듈과 다른 database 모듈임을 확인하자.
-        function logUser(){
-            var ref = firebaseDatabase.ref("users/"+userInfo.uid); //저장될 곳을 users라는 부모 키를 레퍼런스로 지정.
-
-            //저장 형식
-            var obj = {
-                name: name,
-            };
-
-            ref.set(obj); // 고유한 자식 키가 하나 생셩이 되면서 json 삽입
-            alert("가입성공. 이메일 인증을 완료한 후 로그인 하세요");
-
-            //메인 페이지로 이동시키고 세션 저장시키기
-            window.location.href = "{% url 'index' %}"
-        }
+            // [START_EXCLUDE]
+            if (errorCode === 'auth/wrong-password') {
+                alert('Wrong password.');
+            } else {
+                alert(errorMessage);
+            }
+            console.log(error);
+            isAdduser = false;
+            // document.getElementById('quickstart-sign-in').disabled = false;
+            // [END_EXCLUDE]
+        });
       });
     });
+
+
+
+
+            /**
+            * initApp handles setting up UI event listeners and registering Firebase auth listeners:
+            * - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
+            * out, and that is where we update the UI.
+            */
+        function initApp() {
+            // Listening for auth state changes.
+            // [START authstatelistener]
+            firebase.auth().onAuthStateChanged(function(user) {
+            // [START_EXCLUDE silent]
+            // [END_EXCLUDE]
+            if (user && isAdduser ) {
+            // User is signed in.
+
+            var ref = firebaseDatabase.ref("users/"+ user.uid); //저장될 곳을 users라는 부모 키를 레퍼런스로 지정.
+
+            var Name = $('#name').val();
+
+            //저장 형식
+            var obj = {Name: Name};
+
+            ref.set(obj); // 고유한 자식 키가 하나 생셩이 되면서 json 삽입
+
+            alert("가입성공");
+
+            window.location.href = "{% url 'index' %}}"
+
+            // [END_EXCLUDE]
+            } else {
+            // User is signed out.
+            // [START_EXCLUDE]
+            // [END_EXCLUDE]
+            }
+            // [START_EXCLUDE silent]
+            // [END_EXCLUDE]
+            });
+            // [END authstatelistener]
+        }
+
+        window.onload = function() {
+            initApp();
+        };
+
   </script>
 </body>
 </html>
